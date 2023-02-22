@@ -2,9 +2,9 @@ name: Continuous Delivery of Land DA Container
 
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "test_master" ]
   pull_request:
-    branches: [ "test" ]
+    branches: [ "test_master" ]
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
     - name: Check Github event action
       run: |  
         echo "${{ github.event_name }}"
-        echo "${{ github.event.pull_request.merged }} "
+        echo "${{ github.event.pull_request.merged }}"
         
     - name: Checkout
       uses: actions/checkout@v3
@@ -65,6 +65,10 @@ jobs:
        docker images 
        if [[ $(docker image inspect ufs-noahmp_landa:develop) ]]; then
         echo "ufs-noahmp_landa:develop generated ..."
+        if [[ ${{ github.event_name == 'push' || github.event.pull_request.merged == true }} ]]; then
+          echo "${{ github.event_name }}"
+          echo "${{ github.event.pull_request.merged }}"
+        fi
        else
         echo "ufs-noahmp_landa:develop was not generated ..."
         exit 1
