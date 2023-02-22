@@ -19,7 +19,7 @@ jobs:
         if [[ ${{ github.event_name }} == "push" ]]; then
              echo "Will push tag"
         else
-             echo "No tag push"
+             echo "No action for tag push"
         fi
         
     - name: Checkout
