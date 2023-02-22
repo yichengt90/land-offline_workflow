@@ -16,8 +16,7 @@ jobs:
     - name: Print Github event action
       run: |  
         echo "${{ github.event_name }}"
-        echo "${{ github.event.pull_request.merged }}"
-        if [[ ${{ github.event_name }} == "push" || ${{ github.event.pull_request.merged }} == "true" ]]; then
+        if [[ ${{ github.event_name }} == 'push' ]]; then
              echo "Will push tag"
         else
              echo "No tag push"
@@ -54,7 +53,7 @@ jobs:
        docker images 
        if [[ $(docker image inspect ufs-noahmp_landa:develop) ]]; then
             echo "ufs-noahmp_landa:develop generated ..."
-        if [[ ${{ github.event_name }} == "push" || ${{ github.event.pull_request.merged }} == "true" ]]; then
+        if [[ ${{ github.event_name }} == "push" ]]; then
             echo "docker push tag to Dockerhub ..."
             #docker tag ufs-noahmp_landa:develop ufscommunity/ufs-noahmp_landa:develop
             #docker push ufscommunity/ufs-noahmp_landa:develop
