@@ -13,7 +13,7 @@ jobs:
     environment: production
 
     steps:
-    - name: Check Github event action
+    - name: Print Github event action
       run: |  
         echo "${{ github.event_name }}"
         echo "${{ github.event.pull_request.merged }}"
@@ -22,22 +22,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         submodules: recursive
-
-#    - name: Build HTML
-#      uses: ammaraskar/sphinx-action@master
-    
-#    - name: Upload artifacts
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: html-docs
-#        path: docs/build/html/
-    
-#    - name: Deploy
-#      uses: peaceiris/actions-gh-pages@v3
-#      if: github.ref == './test/ci/Dockerfile'
-#      with:
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        publish_dir: docs/build/html
         
     - uses: jitterbit/get-changed-files@v1
       id: abc
@@ -66,8 +50,9 @@ jobs:
        if [[ $(docker image inspect ufs-noahmp_landa:develop) ]]; then
         echo "ufs-noahmp_landa:develop generated ..."
         if [[ ${{ github.event_name == 'push' || github.event.pull_request.merged == true }} ]]; then
-          echo "${{ github.event_name }}"
-          echo "${{ github.event.pull_request.merged }}"
+          echo "docker push tag to Dockerhub ..."
+          #docker tag ufs-noahmp_landa:develop ufscommunity/ufs-noahmp_landa:develop
+          #docker push ufscommunity/ufs-noahmp_landa:develop
         fi
        else
         echo "ufs-noahmp_landa:develop was not generated ..."
