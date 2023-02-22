@@ -49,7 +49,7 @@ jobs:
        docker images 
        if [[ $(docker image inspect ufs-noahmp_landa:develop) ]]; then
             echo "ufs-noahmp_landa:develop generated ..."
-        if [[ ${{ github.event_name == 'push' || github.event.pull_request.merged == true }} ]]; then
+        if [[ ${{ github.event_name == "push" || github.event.pull_request.merged == "true" }} ]]; then
             echo "docker push tag to Dockerhub ..."
             #docker tag ufs-noahmp_landa:develop ufscommunity/ufs-noahmp_landa:develop
             #docker push ufscommunity/ufs-noahmp_landa:develop
