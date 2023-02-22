@@ -16,7 +16,7 @@ jobs:
     - name: Print Github event action
       run: |  
         echo "${{ github.event_name }}"
-        if [[ ${{ github.event_name }} == 'push' ]]; then
+        if [[ ${{ github.event_name }} == "push" ]]; then
              echo "Will push tag"
         else
              echo "No tag push"
