@@ -2,9 +2,9 @@ name: Continuous Delivery of Land DA Container
 
 on:
   push:
-    branches: [ "release/public-v1.0.0" ]
+    branches: [ "test_master" ]
   pull_request:
-    branches: [ "release/public-v1.0.0" ]
+    branches: [ "test_master" ]
 
 jobs:
   deploy:
@@ -13,26 +13,20 @@ jobs:
     environment: production
 
     steps:
+    - name: Print Github event action
+      run: |  
+        echo "${{ github.event_name }}"
+        echo "${{ github.event.pull_request.merged }}"
+        if [[ ${{ github.event_name }} == "push" || ${{ github.event.pull_request.merged }} == "true" ]]; then
+             echo "Will push tag"
+        else
+             echo "No tag push"
+        fi
+        
     - name: Checkout
       uses: actions/checkout@v3
       with:
         submodules: recursive
-
-    - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
-    
-#    - name: Upload artifacts
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: html-docs
-#        path: docs/build/html/
-    
-#    - name: Deploy
-#      uses: peaceiris/actions-gh-pages@v3
-#      if: github.ref == './test/ci/Dockerfile'
-#      with:
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        publish_dir: docs/build/html
         
     - uses: jitterbit/get-changed-files@v1
       id: abc
@@ -59,7 +53,12 @@ jobs:
       run: | 
        docker images 
        if [[ $(docker image inspect ufs-noahmp_landa:develop) ]]; then
-        echo "ufs-noahmp_landa:develop generated ..."
+            echo "ufs-noahmp_landa:develop generated ..."
+        if [[ ${{ github.event_name }} == "push" || ${{ github.event.pull_request.merged }} == "true" ]]; then
+            echo "docker push tag to Dockerhub ..."
+            #docker tag ufs-noahmp_landa:develop ufscommunity/ufs-noahmp_landa:develop
+            #docker push ufscommunity/ufs-noahmp_landa:develop
+        fi
        else
         echo "ufs-noahmp_landa:develop was not generated ..."
         exit 1
