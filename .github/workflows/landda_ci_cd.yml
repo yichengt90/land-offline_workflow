@@ -15,8 +15,8 @@ jobs:
     steps:
     - name: Check Github event action
       run: |  
-        echo "${{ github.event }}"
-        echo "${{ github.event.action }} "
+        echo "${{ github.event_name }}"
+        echo "${{ github.event.pull_request.merged }} "
         
     - name: Checkout
       uses: actions/checkout@v3
